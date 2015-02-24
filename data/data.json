@@ -1,0 +1,80 @@
+[
+   {
+      "line_id":0,
+      "station_id":0,
+      "station_name":"Monumento",
+      "time_ms": -28800000
+   },
+   {
+      "line_id":0,
+      "station_id":0,
+      "station_name":"Balintawak",
+      "time_ms": -14400000
+   },
+   {
+      "line_id":0,
+      "station_id":0,
+      "station_name":"Kaingin Road",
+      "time_ms": 1800600
+   },
+   {
+      "line_id":0,
+      "station_id":0,
+      "station_name":"Trinoma",
+      "time_ms": 7200000
+   },
+   {
+      "line_id":0,
+      "station_id":1,
+      "station_name":"Balintawak",
+      "time_ms": -28800000
+   },
+   {
+      "line_id":0,
+      "station_id":1,
+      "station_name":"Kaingin Road",
+      "time_ms": 12346
+   },
+   {
+      "line_id":0,
+      "station_id":1,
+      "station_name":"Timog Ave",
+      "time_ms": 1720040
+   },
+   {
+      "line_id":0,
+      "station_id":2,
+      "station_name":"Kaingin Road",
+      "time_ms": -28800000
+   },
+   {
+      "line_id":0,
+      "station_id":2,
+      "station_name":"Kamuning",
+      "time_ms": 9000960
+   },
+   {
+      "line_id":0,
+      "station_id":2,
+      "station_name":"Munoz",
+      "time_ms": 9900000
+   },
+   {
+      "line_id":0,
+      "station_id":3,
+      "station_name":"Munoz",
+      "time_ms": 9000000
+   },
+   {
+      "line_id":0,
+      "station_id":3,
+      "station_name":"Munoz",
+      "time_ms": 9800000
+   },
+   {
+      "line_id":0,
+      "station_id":3,
+      "station_name":"Munoz",
+      "time_ms": 10000000
+   }
+] 

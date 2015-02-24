@@ -1,0 +1,132 @@
+body{
+    font-family:sans-serif;
+    background-color: #eeeeee;
+}
+/*Header*/
+#header{
+    background-color:#7DB4B5;
+    color:white;
+    text-align:center;
+    padding:5px;
+    border-bottom: solid 5px #000000;
+}
+/*stations*/
+#station{
+    color:#000000;
+    line-height:30px;
+    background-color:#E0EFF1;
+    height:1400px;
+    width:210px;
+    float:left;
+    padding:5px;
+    border-right: 3px solid #332222;
+}
+.list-group{
+    background-color: #1A2B2B;
+    width:200px;
+    border-radius: 4px;
+    border-color: white;
+    margin-bottom: 2px;
+    padding-left: 5px;
+}
+.list-group-item.active{
+    color: #FFFFFF;
+}
+
+/*Dropdowns*/
+#filter{
+    float:right; 
+    margin-top:5px; 
+    margin-right:10px;
+}
+#setTime, #timeElapsed, h4{
+    margin-top:15px;
+    margin-left:50px;
+    display: inline;
+}
+#timeseries{
+    float:left;
+}
+.axis path, line{
+    stroke:black;
+}
+.y.axis, .x.axis{
+    font-family:Georgia;
+    font-size:12px;
+}
+/*.grid-background{
+    background-color: #ddd;
+}*/
+.timeseries path{
+    stroke-width:3px;
+}
+.timeseries circle{
+    stroke: white;
+}
+.timeseries text{
+    fill: white;
+    stroke: none;
+    font-size:10px;
+    font-weight: bold;
+}
+.line {
+    float:left;
+}
+.line_container{
+    width: 150px;
+    height: 20px;
+}
+path{
+    fill: none;
+}
+
+.station_1, .station_5, .station_23, .station_29, .station_36{
+    stroke:#2850AD;
+    fill:#2850AD;
+    background-color:#2850AD;
+}
+.station_9, .station_17, .station_12, .station_6 {
+    stroke:#FF6319;
+    fill:#FF6319;
+    background-color:#FF6319;
+}
+.station_2, .station_22, .station_25, .station_30, .station_37 {
+    stroke:#6CBE45;
+    fill:#6CBE45;
+    background-color:#6CBE45;
+}
+.station_11, .station_0, .station_21, .station_35 {
+    stroke:#996633;
+    fill:#996633;
+    background-color:#996633;
+}
+.station_3, .station_20, .station_28, .station_38 {
+    stroke:#A7A9AC;
+    fill:#A7A9AC;
+    background-color:#A7A9AC;
+}
+.station_10, .station_16, .station_4, .station_31{
+    stroke:#FCCC0A;
+    fill:#FCCC0A;
+    background-color:#FCCC0A;
+}
+.station_15, .station_19, .station_27, .station_34 {
+    stroke:#808183;
+    fill:#808183;
+    background-color:#808183;
+}
+.station_7, .station_14, .station_9, .station_33{
+    stroke:#EE352E;
+    fill:#EE352E;
+    background-color:#EE352E;
+}
+.station_18, .station_13, .station_26{
+    stroke:#00933C;
+    fill:#00933C;
+    background-color:#00933C;
+}
+.station_8, .station_24, .station_32 {
+    stroke:#B933AD;
+    fill:#B933AD;
+    background-color:#B933AD;
+}

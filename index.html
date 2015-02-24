@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Visualization</title>
+    <meta charset="utf-8">
+
+    <script type="text/javascript" src="misc/d3/d3.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript" src="js/script.js"></script>
+</head>
+<body>
+    
+    <div id="header"><h1>Estimated Time of Travel Visualization</h1></div>
+    <div id="station">Departed station</div>
+    <div id="setTime">Set Departure Time: </div>
+    <div id="timeElapsed">Time Difference: </div>
+    <div id="filter">Filters: </div>
+    <div id="timeseries"></div>
+
+    <script>
+        d3.json('data/lines.json', filter);
+        d3.json('data/times.json', setTime);
+        d3.json('data/stations.json', draw);
+    </script>
+
+</body>
+</html>
