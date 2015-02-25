@@ -42,7 +42,7 @@ function filter(data){
         bound_filter.append("option")
             .attr("value", "south")
             .text("Southbound");
-    bound_filter.property("value", "south")
+    //bound_filter.property("value", "south")
     redraw();
     
 } 
@@ -69,6 +69,7 @@ function change(){
     d3.select("svg").remove();
     d3.select("#text text").remove();
     d3.select("#timeElapsed text").remove();
+    d3.select("#destination text").remove()
     redraw();
 }
 
