@@ -1,6 +1,6 @@
 body{
     font-family:sans-serif;
-    background-color: #eeeeee;
+    background-color: #FFFFFF;
 }
 /*Header*/
 #header{
@@ -39,9 +39,14 @@ body{
     margin-top:5px; 
     margin-right:10px;
 }
-#setTime, #timeElapsed, h4{
-    margin-top:15px;
-    margin-left:50px;
+#setTime{
+    padding-left:250px;
+}
+#text{
+    padding-left:100px;
+}
+
+#text, #departed, #timeInitial, #destination, #timeElapsed{
     display: inline;
 }
 #timeseries{

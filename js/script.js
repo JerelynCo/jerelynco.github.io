@@ -2,7 +2,7 @@
 var time_scale, station_scale;
 var line_filter, day_filter, bound_filter, time_filter;
 var lines, lineID;
-var times, time_axis, timeDeparted;
+var times, time_axis, timeDeparted_ms, timeDeparted;
 var points;
 var stations, this_stations;
 
@@ -42,7 +42,9 @@ function filter(data){
         bound_filter.append("option")
             .attr("value", "south")
             .text("Southbound");
+    bound_filter.property("value", "south")
     redraw();
+    
 } 
 
 //set departure time
@@ -65,6 +67,8 @@ function setTime(data){
 function change(){
     d3.selectAll(".list-group").remove();
     d3.select("svg").remove();
+    d3.select("#text text").remove();
+    d3.select("#timeElapsed text").remove();
     redraw();
 }
 
@@ -76,7 +80,12 @@ function redraw(){
 
     var this_time = times.filter(function(d){return d.time_id===parseInt(time_filter.property("value"));});
     //gets the filtered time_ms in the array
-    timeDeparted = this_time[0].time_ms;
+    timeDeparted_ms = this_time[0].time_ms;
+    timeDeparted = this_time[0].time;
+    d3.select("#timeInitial text").remove();
+    d3.select("#timeInitial")
+        .append("text")
+        .text(timeDeparted);
     draw(stations);  
 }   
 
@@ -84,7 +93,7 @@ function redraw(){
 function draw(data) {
     stations = data;
     // set up the viewport, the scales, and axis generators    
-    var chart_container_dimensions = {width: 1200, height: 1000},
+    var chart_container_dimensions = {width: 1000, height: 1000},
         cmargin = {top: 50, right: 20, bottom: 70, left: 200},        
         chart_dimensions = {
             width: chart_container_dimensions.width - cmargin.left - cmargin.right,
@@ -107,7 +116,7 @@ function draw(data) {
     //So if we want to start in 00:00 (12 mn), then offset it negatively by 8h -> 1000*60s*60m*8  = 28800000
     time_scale = d3.time.scale()
         .range([0, chart_dimensions.width])
-        .domain([timeDeparted, timeDeparted+43200000]); //adds 12 hours after the time departed
+        .domain([timeDeparted_ms, timeDeparted_ms+36000000]); //adds 12 hours after the time departed
     var time_axis = d3.svg.axis()
         .scale(time_scale)
         .orient("bottom")
@@ -153,15 +162,15 @@ function draw(data) {
 
 function get_timeseries_data(d,i){
     // get the id of the current element
-    var id = d.station_id;
-    console.log(id)
+    var id = d.station_id; 
     // see if we have an associated time series
     var ts = d3.select("#station_"+id);
-    var accumulator = timeDeparted;
+    var accumulator = timeDeparted_ms;
     var index = 0;
+
+    
     // toggle
     if (ts.empty()){
-        // if(line_filter.property("value") === "weekday")
         if(day_filter.property("value")==="weekday" && bound_filter.property("value") ==="north"){
             d3.json('data/wkdayN.json', function(data){
                 points = data;
@@ -169,7 +178,6 @@ function get_timeseries_data(d,i){
             });
             console.log("weekday north");
         }
-        //error
         else if(day_filter.property("value")==="weekend" && bound_filter.property("value") ==="north"){
             d3.json('data/wkendN.json', function(data){
                 points = data;
@@ -193,31 +201,60 @@ function get_timeseries_data(d,i){
             console.log("weekend south");
         }
         console.log(d.station_name + " displayed");
-    } else {
+        d3.select("#departed text").remove();
+        d3.select("#departed")
+            .append("text")
+            .text(d.station_name);
+    } 
+    else {
         ts.remove()
+        d3.select("#departed text").remove();
         console.log(d.station_name + " removed");
     }
 }
 
 function pointsFilter(points, id){
-    var accumulator = timeDeparted;
+    var accumulator = timeDeparted_ms;
     var index = 0;
+
     filtered_data = points.filter(function(d,i){
-        if(accumulator > timeDeparted+(1800000*(index+1))){
-            index++;        
-        }                   
-        if(d.time_ms === timeDeparted && d.station_id >= id){
-            points[i].time_ms = accumulator + points[i+index].traffic_time*60000;
-            points[i].traffic_time = points[i+index].traffic_time;
-            accumulator = points[i].time_ms;
-            return points[i];
+        if(bound_filter.property("value") === "north"){
+            if(accumulator > timeDeparted_ms+(1800000*(index+1))){
+                index++;        
+            }                   
+            if(d.time_ms === timeDeparted_ms && d.station_id >= id){
+                points[i].time_ms = accumulator + points[i+index].traffic_time*60000;
+                points[i].traffic_time = points[i+index].traffic_time;
+                accumulator = points[i].time_ms;
+                return points[i];
+            }
+        }
+        
+        else if(bound_filter.property("value") === "south"){
+            if(accumulator > timeDeparted_ms+(1800000*(index+1))){
+                index++;        
+            }                   
+            if(d.time_ms === timeDeparted_ms && d.station_id <= id){
+                //just the same code above. Changed the indexing lang.
+                /*points[id*48-i].time_ms = accumulator + points[(id*48-i) + index].traffic_time*60000;
+                points[id*48-i].traffic_time = points[id*48-i + index].traffic_time;
+                accumulator = points[id*48-i].time_ms;*/
+
+                //doesn't work if I change time_ms! But works when I change traffic_time. 
+                /*points[id*48-i].traffic_time = 1;
+                points[id*48-i].time_ms = 1;*/
+
+
+                console.log(points[id*48-i])               
+
+                return points[id*48-i];
+            }
         }
     });
     draw_timeseries(filtered_data, id);
 }
 
 function draw_timeseries(data, id){  
-    console.log(timeDeparted)
     var line = d3.svg.line()
         .x(function(d){return time_scale(d.time_ms)})
         .y(function(d){return station_scale(d.station_name)+11.57})
@@ -245,11 +282,6 @@ function draw_timeseries(data, id){
         .transition()
         .delay(function(d, i) { return i / data.length * enter_duration; })
         .attr("r", 5)
-        .each("end",function(d,i){
-            if (i === data.length-1){
-                add_label(this,d)
-            }
-        })
         
     var counter = 0;  
     g.selectAll("circle")
@@ -257,9 +289,7 @@ function draw_timeseries(data, id){
             d3.select(this).transition().attr("r", 9)
         })
         .on("mouseout", function(d,i){
-            if (i !== data.length-1) {
-                d3.select(this).transition().attr("r", 5)
-            }
+            d3.select(this).transition().attr("r", 5)
         })
         .on("click", function(d){
             counter++;
@@ -267,18 +297,18 @@ function draw_timeseries(data, id){
             console.log(d.time_ms + " Clicked");
             if(counter == 1){
                 finalTime = d.time_ms;
-            }
-            else if(counter == 2){
-                initialTime = d.time_ms;
-                console.log( "Elapsed time: " + Math.abs((finalTime-initialTime) / 60000) + "minutes" );
                 d3.select("#timeElapsed")
-                    .append("h4")
-                    .text(Math.abs((finalTime-initialTime) / 60000) + "minutes");
+                    .append("text")
+                    .text(Math.abs((finalTime-timeDeparted_ms) / 60000));
+                d3.select("#destination")
+                    .append("text")
+                    .text(d.station_name);
             }
-            else if(counter > 2){
+            else if(counter > 1){
                 d3.selectAll("circle").attr("value", function(d){return d.time_ms}).attr("fill", "");
                 counter = 0;
-                d3.select("#timeElapsed .text").remove();
+                d3.select("#destination text").remove()
+                d3.select("#timeElapsed text").remove()
             }
         })
     
@@ -287,7 +317,7 @@ function draw_timeseries(data, id){
             d3.select("text." + "station_" + d.station_id).remove()
             d3.select("#chart")
                 .append("text")
-                .text(d.time_ms)
+                .text(d.station_name +": " + d.time_ms)
                 .attr("x", time_scale(d.time_ms) + 10)
                 .attr("y", station_scale(d.station_name) - 10)
                 .attr("class", "station_" + d.station_id)
@@ -300,25 +330,7 @@ function draw_timeseries(data, id){
                 .attr("transform","translate(10, -10)")
                 .remove()
         })
-
-    function add_label(circle, d, i){
-        d3.select(circle)
-            .transition()
-            .attr("r", 10)
         
-        d3.select("#station_" + d.station_id)
-            .append("text")
-            .text(d.station_id)
-            .attr("text-anchor","middle")
-            .style("dominant-baseline","central")
-            .attr("x", time_scale(d.time_ms))
-            .attr("y", station_scale(d.station_name))
-            .attr("class","linelabel")
-            .style("opacity",0)
-            .style("fill","white")
-            .transition()
-                .style("opacity",1)        
-    }
 }
 
     
