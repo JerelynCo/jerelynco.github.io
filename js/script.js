@@ -239,15 +239,11 @@ function pointsFilter(points, id){
             if(accumulator > timeDeparted_ms+(1800000*(index+1))){
                 index++;        
             }                   
-            if(d.time_ms === timeDeparted_ms && d.station_id <= id){
-                points[id*48-i].time_ms = accumulator + points[id*48-i+index].traffic_time*60000;
-                points[id*48-i].traffic_time = points[id*48-i+index].traffic_time;
-                accumulator = points[id*48-i].time_ms;
-
-                console.log(id*48-i)
-                console.log(points[id*48-i])
-
-                return points[id*48-i];
+            if(d.time_ms === timeDeparted_ms && d.station_id >= id){
+                points[i].time_ms = accumulator + points[i+index].traffic_time*60000;
+                points[i].traffic_time = points[i+index].traffic_time;
+                accumulator = points[i].time_ms;
+                return points[i];
             }
         }
     });
