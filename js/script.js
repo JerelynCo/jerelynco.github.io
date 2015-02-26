@@ -6,6 +6,8 @@ var times, time_axis, timeDeparted_ms, timeDeparted;
 var points;
 var stations, this_stations;
 
+var time_format = d3.time.format("%I:%M %p")
+
 //returns the three filters
 function filter(data){
     //equates global variable line to lines data
@@ -61,7 +63,7 @@ function setTime(data){
             .data(data)
             .enter()
             .append("option")
-            .text(function(d){return d.time;})
+            .text(function(d){return time_format(new Date(d.time_ms))})
             .attr("value", function(d){return d.time_id; });
     time_filter.property("value", 0);
     redraw();
@@ -313,7 +315,7 @@ function draw_timeseries(data, id){
                 d3.select("#timeElapsed text").remove()
             }
         })
-    var time_format = d3.time.format("%I:%M %p")
+    
     g.selectAll("circle")
         .on("mouseover.tooltip", function(d){
             d3.select("text." + "station_" + d.station_id).remove()
