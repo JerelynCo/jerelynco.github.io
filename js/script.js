@@ -43,6 +43,7 @@ function filter(data){
             .attr("value", "south")
             .text("Southbound");
     bound_filter.property("value", "north")
+    svg.remove();
     redraw();
 
     
