@@ -45,7 +45,7 @@ function filter(data){
             .attr("value", "south")
             .text("Southbound");
     bound_filter.property("value", "north")
-    svg.remove();
+    d3.select("svg").remove();
     redraw();
 } 
 
@@ -184,7 +184,7 @@ function get_timeseries_data(d,i){
             console.log("weekday north");
         }
         else if(day_filter.property("value")==="weekend" && bound_filter.property("value") ==="north"){
-            d3.json('data/wkendN.json', function(data){
+            d3.json('data/wkendNB.json', function(data){
                 points = data;
                 pointsFilter(points, id); 
             });
@@ -262,7 +262,6 @@ function draw_timeseries(data, id){
     
     var g = d3.select("#chart")
         .append("g")
-
         .attr("id", "station_" + id)
         .attr("class", "timeseries " + "station_" +id)
     
