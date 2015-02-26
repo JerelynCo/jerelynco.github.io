@@ -47,9 +47,6 @@ function filter(data){
     bound_filter.property("value", "north")
     svg.remove();
     redraw();
-
-    
-    
 } 
 
 //set departure time
@@ -93,7 +90,7 @@ function redraw(){
     d3.select("#timeInitial text").remove();
     d3.select("#timeInitial")
         .append("text")
-        .text(timeDeparted);
+        .text(time_format(new Date(timeDeparted_ms)));
     draw(stations);  
 }   
 
