@@ -42,8 +42,10 @@ function filter(data){
         bound_filter.append("option")
             .attr("value", "south")
             .text("Southbound");
-    //bound_filter.property("value", "south")
+    bound_filter.property("value", "north")
     redraw();
+
+    
     
 } 
 
@@ -72,6 +74,8 @@ function change(){
     d3.select("#destination text").remove()
     redraw();
 }
+
+
 
 //checking for the filtered values
 function redraw(){
@@ -122,7 +126,7 @@ function draw(data) {
         .scale(time_scale)
         .orient("bottom")
         .ticks(d3.time.minute, 15)
-        .tickFormat(d3.time.format('%H:%M'));
+        .tickFormat(d3.time.format('%I:%M %p'));
         
     // draw axes
     var g = d3.select("#timeseries")
@@ -236,17 +240,12 @@ function pointsFilter(points, id){
                 index++;        
             }                   
             if(d.time_ms === timeDeparted_ms && d.station_id <= id){
-                //just the same code above. Changed the indexing lang.
-                /*points[id*48-i].time_ms = accumulator + points[(id*48-i) + index].traffic_time*60000;
-                points[id*48-i].traffic_time = points[id*48-i + index].traffic_time;
-                accumulator = points[id*48-i].time_ms;*/
+                points[id*48-i].time_ms = accumulator + points[id*48-i+index].traffic_time*60000;
+                points[id*48-i].traffic_time = points[id*48-i+index].traffic_time;
+                accumulator = points[id*48-i].time_ms;
 
-                //doesn't work if I change time_ms! But works when I change traffic_time. 
-                /*points[id*48-i].traffic_time = 1;
-                points[id*48-i].time_ms = 1;*/
-
-
-                console.log(points[id*48-i])               
+                console.log(id*48-i)
+                console.log(points[id*48-i])
 
                 return points[id*48-i];
             }
@@ -263,6 +262,7 @@ function draw_timeseries(data, id){
     
     var g = d3.select("#chart")
         .append("g")
+
         .attr("id", "station_" + id)
         .attr("class", "timeseries " + "station_" +id)
     
@@ -281,7 +281,7 @@ function draw_timeseries(data, id){
     
     g.selectAll("circle")
         .transition()
-        .delay(function(d, i) { return i / data.length * enter_duration; })
+        .delay(function(d, i) {return i / data.length * enter_duration;})
         .attr("r", 5)
         
     var counter = 0;  
@@ -312,13 +312,13 @@ function draw_timeseries(data, id){
                 d3.select("#timeElapsed text").remove()
             }
         })
-    
+    var time_format = d3.time.format("%I:%M %p")
     g.selectAll("circle")
         .on("mouseover.tooltip", function(d){
             d3.select("text." + "station_" + d.station_id).remove()
             d3.select("#chart")
                 .append("text")
-                .text(d.station_name +": " + d.time_ms)
+                .text(d.station_name +": " + time_format(new Date(d.time_ms)))
                 .attr("x", time_scale(d.time_ms) + 10)
                 .attr("y", station_scale(d.station_name) - 10)
                 .attr("class", "station_" + d.station_id)
@@ -330,8 +330,7 @@ function draw_timeseries(data, id){
                 .style("opacity",0)
                 .attr("transform","translate(10, -10)")
                 .remove()
-        })
-        
+        })   
 }
 
     

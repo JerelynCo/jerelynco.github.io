@@ -39,6 +39,11 @@ body{
     margin-top:5px; 
     margin-right:10px;
 }
+button{
+    float:right;
+    margin-right:10px;
+}
+
 #setTime{
     padding-left:250px;
 }

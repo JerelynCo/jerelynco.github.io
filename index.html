@@ -13,10 +13,15 @@
     <div id="header"><h1>Outsmart EDSA Traffic!</h1></div>
     <div id="station">Departed station</div>
     <div id="setTime">Set Departure Time: </div>
+
     <div id="filter">Filters: </div>
     <br></br>
-    <div id="text">If I leave at <b><div id="departed"></div></b> at time <b><div id="timeInitial"></div></b> I will arrive at <b><div id="destination"></div></b> in <b><div id="timeElapsed"></div></b> minutes. </div>
+<!--     <div id="button"><button>Click to clear displayed stations</button></div> -->
+    
+    <div id="text">If I leave at <b><div id="departed"></div></b> at time <b><div id="timeInitial"></div></b>, I will arrive at <b><div id="destination"></div></b> in <b><div id="timeElapsed"></div></b> minutes. </div>
     <div id="timeseries"></div>
+
+
 
     <script>
         d3.json('data/lines.json', filter);
