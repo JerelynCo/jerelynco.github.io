@@ -5,5 +5,4 @@ Personal website patterned after Jonathan Mcglone's guide on creating personal w
 Visit jerelynco.github.io
 
 ## Created
-Jerelyn Co
-February 17, 2017
+Jerelyn Co (February 17, 2017)
